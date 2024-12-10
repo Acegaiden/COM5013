@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search</title>
+    <!-- Link to the CSS file -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <a href = "/search">05 Search</a>
+    <a href = "/sort">06 Sort</a>
+    <a href = "/queue">08 Queue</a>
+
+    <h1>05 Search</h1>
+    <p> This task utilises Linear Search and Binary Search to identify whether a value is present or not </p>
+    <p> Try building the auto complete functionality via an input box here! </p>
+    <input = "text"> 
+    <button type = "submit"> Search </button>
+
+    <h2> Dictionary Test </h2> 
+
+    <p><strong>Name:</strong> {{ user_dict.name }}</p>
+    <p><strong>Age:</strong> {{ user_dict.age }}</p>
+    <p><strong>Occupation:</strong> {{ user_dict.occupation }}</p>
+    <p><strong>Location:</strong> {{ user_dict.location }}</p>
+
+    <h2>Linear search of Amazon list</h2>
+    <ul>
+        {% for a in results_list %}
+            <li>{{ a }}</li>
+        {% endfor %}
+    </ul>
+
+    <h1>Amazon data via SQL Lite DB</h1>
+    <table border="1">
+        <tr>
+            <th>Product</th>
+            <th>Price</th>
+            <th>Rating</th>
+            <th>No. of reviews</th>
+            <th>Link</th>
+        </tr>
+        {% for a in amazon_db %}
+        <tr>
+            <td>{{ a[0] }}</td>
+            <td>{{ a[1] }}</td>
+            <td>{{ a[2] }}</td>
+            <td>{{ a[3] }}</td>
+            <td>{{ a[4] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <h2>Amazon List of tech products via Pandas DF</h2>
+
+    <ul>
+        {% for a in amazon %}
+            <li>{{ a }}</li>
+        {% endfor %}
+    </ul>
+
+
+    <h2> Linear Search </h2>
+    <table border = "3">
+        <tr>
+            <td>size</td> <td>{{ linear[0] }}</td> 
+        </tr>
+        <tr>
+            <td>value sought</td> <td>{{ linear[1] }}</td> 
+        </tr>
+        <tr>
+            <td>exists?</td> <td>{{ linear[2] }}</td> 
+        </tr>
+        <tr>
+            <td>function calls</td> <td>{{ linear[3] }}</td> 
+        </tr>
+        <tr><td>execution time</td> <td>{{ linear[4] }}</td> 
+        </tr>
+    </table>
+
+    <h2> Binary Search </h2>
+
+    <table border = "3">
+        <tr>
+            <td>size</td> <td>{{ binary[0] }}</td> 
+        </tr>
+        <tr>
+            <td>value sought</td> <td>{{ binary[1] }}</td> 
+        </tr>
+        <tr>
+            <td>exists?</td> <td>{{ binary[2] }}</td> 
+        </tr>
+        <tr>
+            <td>function calls</td> <td>{{ binary[3] }}</td> 
+        </tr>
+        <tr><td>execution time</td> <td>{{ binary[4] }}</td> 
+        </tr>
+    </table>
+
+</body>
+</html>
