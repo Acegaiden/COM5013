@@ -1,0 +1,23 @@
+class VendingMachine:
+    def __init__(self):
+        # Dictionary to store items: {item_id: (name, price, stock)}
+        self.items = {
+            1: ("Chips", 1.50, 10),
+            2: ("Soda", 2.00, 8),
+            3: ("Candy", 1.25, 5),
+            4: ("Gum", 0.75, 20),
+        }
+# User's current balance
+        self.balance = 0.0
+        # Accepted denominations
+        self.denominations = [0.25, 0.50, 1.00, 2.00, 5.00]
+        # Admin password for restocking
+        self.admin_password = "valarmorghulis"
+
+def display_items(self):
+   "Display available items, prices, and stock."
+        print("\nAvailable Items:")
+        for item_id, (name, price, stock) in self.items.items():
+            stock_display = f"{stock}" if stock > 0 else "Out of Stock"
+            print(f"{item_id}: {name} - £{price:.2f} (Stock: {stock_display})")
+
