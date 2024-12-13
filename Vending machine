@@ -7,17 +7,127 @@ class VendingMachine:
             3: ("Candy", 1.25, 5),
             4: ("Gum", 0.75, 20),
         }
-# User's current balance
+        # User's current balance
         self.balance = 0.0
         # Accepted denominations
         self.denominations = [0.25, 0.50, 1.00, 2.00, 5.00]
         # Admin password for restocking
         self.admin_password = "valarmorghulis"
 
-def display_items(self):
-   "Display available items, prices, and stock."
+    def display_items(self):
+        "Display available items, prices, and stock."
         print("\nAvailable Items:")
         for item_id, (name, price, stock) in self.items.items():
             stock_display = f"{stock}" if stock > 0 else "Out of Stock"
             print(f"{item_id}: {name} - £{price:.2f} (Stock: {stock_display})")
 
+    def insert_money(self, amount):
+        "Insert money into the vending machine."
+        if amount in self.denominations:
+            self.balance += amount
+            print(f"Inserted £{amount:.2f}. Current balance: £{self.balance:.2f}.")
+        else:
+            print(f"Invalid denomination: £{amount}. Accepted: {self.denominations}")
+
+    def select_item(self, item_id):
+        "Item selection and purchase."
+        if item_id not in self.items:
+            print("Invalid item selection.")
+            return
+
+        name, price, stock = self.items[item_id]
+        if stock <= 0:
+            print(f"Sorry, {name} is out of stock.")
+            return
+
+        if self.balance < price:
+            print(f"Insufficient balance. {name} costs £{price:.2f}.")
+            return
+
+        # Process purchase
+        self.balance -= price
+        self.items[item_id] = (name, price, stock - 1)
+        print(f"Dispensing {name}. Remaining balance: £{self.balance:.2f}.")
+        self.calculate_change()
+
+    def refund(self):
+        "Refund remaining balance."
+        if self.balance > 0:
+            print(f"Refunding £{self.balance:.2f}.")
+            self.calculate_change()
+        else:
+            print("No balance to refund.")
+
+    def calculate_change(self):
+        "Calculate the least number of coins for change."
+        change = self.balance
+        self.balance = 0.0
+        coins = []
+        for denom in sorted(self.denominations, reverse=True):
+            while round(change, 2) >= denom:  # Use rounding to avoid floating-point errors
+                change -= denom
+                coins.append(denom)
+
+        if coins:
+            print(f"Returning change: {coins}")
+        else:
+            print("No change to return.")
+
+    def admin_mode(self):
+        "Admin mode for restocking items."
+        password = input("Enter admin password: ")
+        if password != self.admin_password:
+            print("Incorrect password. Access denied.")
+            return
+
+        print("\nAdmin Mode: Restock Items")
+        for item_id, (name, price, stock) in self.items.items():
+            try:
+                new_stock = int(input(f"Enter new stock for {name} (current: {stock}): "))
+                if new_stock < 0:
+                    print("Stock cannot be negative. Skipping.")
+                else:
+                    self.items[item_id] = (name, price, new_stock)
+                    print(f"{name} restocked to {new_stock}.")
+            except ValueError:
+                print("Invalid input. Skipping item.")
+
+#Main Program
+
+def main():
+    vm = VendingMachine()
+    while True:
+        print("\n1. Display Items")
+        print("2. Insert Money")
+        print("3. Select Item")
+        print("4. Refund Balance")
+        print("5. Admin Mode (Restock)")
+        print("6. Exit")
+        choice = input("Choose an option: ")
+
+        if choice == "1":
+            vm.display_items()
+        elif choice == "2":
+            try:
+                amount = float(input("Enter amount: "))
+                vm.insert_money(amount)
+            except ValueError:
+                print("Invalid input. Please enter a numeric value.")
+        elif choice == "3":
+            try:
+                item_id = int(input("Enter item ID: "))
+                vm.select_item(item_id)
+            except ValueError:
+                print("Invalid input. Please enter a valid item ID.")
+        elif choice == "4":
+            vm.refund()
+        elif choice == "5":
+            vm.admin_mode()
+        elif choice == "6":
+            print("Thank you for using the vending machine! Goodbye.")
+            break
+        else:
+            print("Invalid choice. Please try again.")
+
+if __name__ == "__main__":
+    main()
